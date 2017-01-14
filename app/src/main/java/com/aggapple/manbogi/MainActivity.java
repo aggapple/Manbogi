@@ -7,6 +7,10 @@ import com.aggapple.manbogi.utils.CheckerHelper;
 import com.aggapple.manbogi.utils.IME;
 import com.aggapple.manbogi.views.BaseTabFragmentPagerAdapter;
 import com.aggapple.manbogi.views.CheckerHelperLinearLayout;
+import com.nhn.android.maps.NMapContext;
+import com.nhn.android.maps.NMapView;
+import com.nhn.android.maps.maplib.NGeoPoint;
+import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -40,24 +44,12 @@ public class MainActivity extends BaseActivity {
 
 	private boolean mIsMiniMode = false;
 
-//    private NMapContext mMapContext;
-//    private static final String CLIENT_ID = "Narc0Em43EdZIvjgnLve";// 애플리케이션 클라이언트 아이디 값
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-//        mMapContext =  new NMapContext(this);
-//        mMapContext.onCreate();
-//        NMapView mapView = (NMapView)findViewById(R.id.mapView);
-//        mapView.setApiKey(CLIENT_ID);// 클라이언트 아이디 설정
-//        mMapContext.setupMapView(mapView);
-
 		initUI();
-		
-//		NMapPlacemark mark = new NMapPlacemark();
-//		Toast.makeText(this, mark.toString(), Toast.LENGTH_SHORT).show();
 	}
 	
 	private void initUI() {

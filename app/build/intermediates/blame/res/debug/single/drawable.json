@@ -4,6 +4,10 @@
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_tab_text.xml"
     },
     {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\selector_btn_navermap_bg.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\exploded-aar\\com.naver.maps.open\\naver-map-api\\2.1.2\\res\\drawable\\selector_btn_navermap_bg.xml"
+    },
+    {
         "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_start.xml",
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_start.xml"
     },
