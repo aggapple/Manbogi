@@ -1,0 +1,7 @@
+#Sat Jan 14 22:24:54 KST 2017
+base.0=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_deac7daae7b6efbe02b7ecbc74ad5d937e3888d2
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_e6fcf37ba06096d6ea1cb8bf9f8c56a4ae8ace2b\\classes.dex
+base.1=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_e6fcf37ba06096d6ea1cb8bf9f8c56a4ae8ace2b
+file.0=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_deac7daae7b6efbe02b7ecbc74ad5d937e3888d2\\classes.dex

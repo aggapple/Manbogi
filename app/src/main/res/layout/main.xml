@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <com.aggapple.manbogi.views.CheckerHelperLinearLayout
+                android:id="@+id/tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <FrameLayout style="@style/tab_layer" >
+
+                    <TextView
+                        style="@style/tab_text"
+                        android:paddingBottom="5dp"
+                        android:text="만보기 화면"
+                        android:textColor="@drawable/btn_tab_text"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/btn_tab_bar" />
+                </FrameLayout>
+
+                <FrameLayout style="@style/tab_layer" >
+
+                    <TextView
+                        style="@style/tab_text"
+                        android:paddingBottom="5dp"
+                        android:text="만보기 기록"
+                        android:textColor="@drawable/btn_tab_text"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/btn_tab_bar" />
+                </FrameLayout>
+            </com.aggapple.manbogi.views.CheckerHelperLinearLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

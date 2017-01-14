@@ -1,0 +1,302 @@
+[
+    {
+        "outputFile": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 38,
+                    "endOffset": 89
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 2,
+                        "startOffset": 784,
+                        "endColumn": 36,
+                        "endOffset": 818
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 94,
+                    "endColumn": 40,
+                    "endOffset": 130
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 2,
+                        "startOffset": 709,
+                        "endColumn": 38,
+                        "endOffset": 745
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 135,
+                    "endColumn": 40,
+                    "endOffset": 171
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 2,
+                        "startOffset": 670,
+                        "endColumn": 38,
+                        "endOffset": 706
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 176,
+                    "endColumn": 39,
+                    "endOffset": 211
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 2,
+                        "startOffset": 632,
+                        "endColumn": 37,
+                        "endOffset": 667
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 216,
+                    "endColumn": 37,
+                    "endOffset": 249
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 2,
+                        "startOffset": 748,
+                        "endColumn": 35,
+                        "endOffset": 781
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 254,
+                    "endColumn": 57,
+                    "endOffset": 307
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\dimens.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 92,
+                        "endColumn": 57,
+                        "endOffset": 145
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 312,
+                    "endColumn": 55,
+                    "endOffset": 363
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\dimens.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 151,
+                        "endColumn": 55,
+                        "endOffset": 202
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 368,
+                    "endColumn": 52,
+                    "endOffset": 416
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 158,
+                        "endColumn": 52,
+                        "endOffset": 206
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 421,
+                    "endColumn": 44,
+                    "endOffset": 461
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 58,
+                        "endColumn": 44,
+                        "endOffset": 98
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 466,
+                    "endColumn": 52,
+                    "endOffset": 514
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 104,
+                        "endColumn": 52,
+                        "endOffset": 152
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 519,
+                    "endLine": 20,
+                    "endColumn": 12,
+                    "endOffset": 835
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 193,
+                        "endLine": 16,
+                        "endColumn": 12,
+                        "endOffset": 513
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 840,
+                    "endLine": 23,
+                    "endColumn": 12,
+                    "endOffset": 995
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 554,
+                        "endLine": 21,
+                        "endColumn": 12,
+                        "endOffset": 711
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 1000,
+                    "endLine": 37,
+                    "endColumn": 12,
+                    "endOffset": 1863
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 736,
+                        "endLine": 37,
+                        "endColumn": 12,
+                        "endOffset": 1612
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 38,
+                    "startColumn": 4,
+                    "startOffset": 1868,
+                    "endLine": 43,
+                    "endColumn": 12,
+                    "endOffset": 2124
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 39,
+                        "startColumn": 4,
+                        "startOffset": 1620,
+                        "endLine": 44,
+                        "endColumn": 12,
+                        "endOffset": 1881
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 44,
+                    "startColumn": 4,
+                    "startOffset": 2129,
+                    "endLine": 50,
+                    "endColumn": 12,
+                    "endOffset": 2441
+                },
+                "from": {
+                    "file": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 46,
+                        "startColumn": 4,
+                        "startOffset": 1889,
+                        "endLine": 52,
+                        "endColumn": 12,
+                        "endOffset": 2207
+                    }
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,93 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:2:1-47:12
+	package
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:3:5-35
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:5:5-30
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:4:5-28
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:2:11-69
+uses-sdk
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+	android:targetSdkVersion
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:9:9-38
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:8:9-35
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:11:5-67
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:11:22-64
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:13:5-79
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:13:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:15:5-81
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:15:22-78
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:17:5-76
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:17:22-73
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:19:5-76
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:19:22-73
+application
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:21:5-45:19
+MERGED from [com.android.support:support-v4:23.4.0] D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+	android:screenOrientation
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:27:9-45
+	android:label
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:26:9-41
+	android:windowSoftInputMode
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:29:9-50
+	android:configChanges
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:24:9-59
+	android:allowBackup
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:23:9-35
+	android:icon
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:25:9-45
+	android:theme
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:28:9-40
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:22:9-45
+activity#com.aggapple.manbogi.Intro
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:30:9-38:20
+	android:label
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:32:13-45
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:31:13-34
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:33:13-37:29
+action#android.intent.action.MAIN
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:34:17-69
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:34:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:36:17-77
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:36:27-74
+activity#com.aggapple.manbogi.MainActivity
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:39:9-50
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:39:19-47
+service#com.aggapple.manbogi.service.MiniModeService
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:41:9-44:19
+	android:enabled
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:43:13-35
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:42:13-52

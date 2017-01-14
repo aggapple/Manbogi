@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_tab_text.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_tab_text.xml"
+    },
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_start.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_start.xml"
+    },
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_tab_bar.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_tab_bar.xml"
+    },
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_stroke_mini.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\shape_stroke_mini.xml"
+    },
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_stroke.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\shape_stroke.xml"
+    }
+]
