@@ -140,9 +140,12 @@ public class MainMonitorFragment extends BaseFragment {
             if (((MainActivity) getActivity()).isStart()) {
                 double calcDistance = SocialUtils.calcDistance(mPrevLat, mPrevLng, ((NGeoPoint) data).getLatitude(), ((NGeoPoint) data).getLongitude());
 //                Toast.makeText(getActivity(), "" + calcDistance, Toast.LENGTH_SHORT).show();
-                if (mIsWalking) {
+                if (mIsWalking && (mPrevLat != 0 || mPrevLng != 0)) {
                     mTotDistance += calcDistance;
                     mDistance.setText(SocialUtils.convertDistance(mTotDistance));
+                    if (((MainActivity) getActivity()).getMiniModeService() != null) {
+                        ((MainActivity) getActivity()).getMiniModeService().setMiniDistance(SocialUtils.convertDistance(mTotDistance));
+                    }
                 }
             }
             mPrevLat = ((NGeoPoint) data).getLatitude();
@@ -151,6 +154,9 @@ public class MainMonitorFragment extends BaseFragment {
             if (((MainActivity) getActivity()).isStart()) {
                 mTotWalk += 1;
                 mWalk.setText("" + mTotWalk);
+                if (((MainActivity) getActivity()).getMiniModeService() != null) {
+                    ((MainActivity) getActivity()).getMiniModeService().setMiniWalk(mTotWalk);
+                }
                 mIsWalking = true;
 
                 if (mConuntDownTimer != null)
@@ -194,6 +200,14 @@ public class MainMonitorFragment extends BaseFragment {
             }
         }
     };
+
+    public long getTotWalk() {
+        return mTotWalk;
+    }
+
+    public double getTotDistance() {
+        return mTotDistance;
+    }
 
     /**
      * Fragment에 포함된 NMapView 객체를 반환함

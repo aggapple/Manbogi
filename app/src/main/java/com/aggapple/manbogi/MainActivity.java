@@ -6,6 +6,7 @@ import com.aggapple.manbogi.service.MiniModeService;
 import com.aggapple.manbogi.service.WalkSensorService;
 import com.aggapple.manbogi.utils.CheckerHelper;
 import com.aggapple.manbogi.utils.IME;
+import com.aggapple.manbogi.utils.SocialUtils;
 import com.aggapple.manbogi.views.BaseTabFragmentPagerAdapter;
 import com.aggapple.manbogi.views.CheckerHelperLinearLayout;
 import com.nhn.android.maps.NMapContext;
@@ -16,13 +17,16 @@ import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -48,11 +52,13 @@ public class MainActivity extends BaseActivity implements Observer {
     private CheckerHelperLinearLayout mTab;
 
     private long mBackPressedTime = 0;
-    // private ServiceConnection mCounnection;
+    private ServiceConnection mConnection;
 
     private boolean mIsMiniMode = false;
 
     private boolean mIsStart = false;
+
+    private MiniModeService mMiniModeService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,15 +82,23 @@ public class MainActivity extends BaseActivity implements Observer {
 
         MainMonitorObserver.getInstance().addObserver(this);
 
-        // mCounnection = new ServiceConnection() {
-        // @Override
-        // public void onServiceDisconnected(ComponentName name) {
-        // }
-        //
-        // @Override
-        // public void onServiceConnected(ComponentName name, IBinder service) {
-        // }
-        // };
+        mConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                MiniModeService.MiniModeBinder mb = (MiniModeService.MiniModeBinder) service;
+                mMiniModeService = mb.getService();
+                mMiniModeService.setMiniWalk(
+                        ((MainMonitorFragment) mAdapter.getItem(PAGE.MONITOR.ordinal())).getTotWalk());
+                mMiniModeService.setMiniDistance(
+                        SocialUtils.convertDistance(((MainMonitorFragment) mAdapter.getItem(PAGE.MONITOR.ordinal())).getTotDistance()));
+                mIsMiniMode = true;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mIsMiniMode = false;
+            }
+        };
     }
 
     public class ChargeTabFragmentPagerAdapter extends BaseTabFragmentPagerAdapter {
@@ -147,11 +161,11 @@ public class MainActivity extends BaseActivity implements Observer {
         mBackPressedTime = System.currentTimeMillis();
     }
 
-    public void setStart(boolean state){
+    public void setStart(boolean state) {
         mIsStart = state;
     }
 
-    public boolean isStart(){
+    public boolean isStart() {
         return mIsStart;
     }
 
@@ -163,11 +177,11 @@ public class MainActivity extends BaseActivity implements Observer {
     protected void onStart() {
         super.onStart();
         if (mIsMiniMode) {
-            Intent intent = new Intent();
-            intent.setClass(this, MiniModeService.class);
-            stopService(intent);
-            // if (mCounnection != null)
-            // unbindService(mCounnection);
+//            Intent intent = new Intent();
+//            intent.setClass(this, MiniModeService.class);
+//            stopService(intent);
+            if (mConnection != null)
+                unbindService(mConnection);
         }
 
     }
@@ -178,19 +192,18 @@ public class MainActivity extends BaseActivity implements Observer {
         if (mIsMiniMode) {
             Intent intent = new Intent();
             intent.setClass(this, MiniModeService.class);
-            startService(intent);
-            // bindService(intent, mCounnection, Context.BIND_AUTO_CREATE);
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+//            startService(intent);
         }
     }
 
     public void stopMiniService() {
-        mIsMiniMode = false;
         if (isServiceRunningCheck("com.aggapple.manbogi.service.MiniModeService")) {
-            Intent intent = new Intent();
-            intent.setClass(this, MiniModeService.class);
-            stopService(intent);
-            // if (mCounnection != null)
-            // unbindService(mCounnection);
+//            Intent intent = new Intent();
+//            intent.setClass(this, MiniModeService.class);
+//            stopService(intent);
+            if (mConnection != null)
+                unbindService(mConnection);
         }
     }
 
@@ -208,6 +221,13 @@ public class MainActivity extends BaseActivity implements Observer {
             intent.setClass(this, WalkSensorService.class);
             stopService(intent);
         }
+    }
+
+    public MiniModeService getMiniModeService() {
+        if (mIsMiniMode)
+            return mMiniModeService;
+        else
+            return null;
     }
 
     @Override

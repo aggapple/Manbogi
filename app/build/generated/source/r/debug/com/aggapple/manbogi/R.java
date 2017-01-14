@@ -38,14 +38,16 @@ public final class R {
         public static final int walk_sm=0x7f02000d;
     }
     public static final class id {
-        public static final int action_settings=0x7f09000b;
+        public static final int action_settings=0x7f09000d;
         public static final int container=0x7f090000;
         public static final int date=0x7f090009;
         public static final int distance=0x7f090004;
         public static final int list=0x7f090008;
         public static final int location=0x7f090005;
         public static final int mapView=0x7f090007;
+        public static final int mini_distance=0x7f09000c;
         public static final int mini_mode_view=0x7f09000a;
+        public static final int mini_walk=0x7f09000b;
         public static final int pager=0x7f090002;
         public static final int service_switch=0x7f090006;
         public static final int tab=0x7f090001;

@@ -19,14 +19,16 @@ int drawable shape_stroke 0x7f02000a
 int drawable shape_stroke_mini 0x7f02000b
 int drawable walk 0x7f02000c
 int drawable walk_sm 0x7f02000d
-int id action_settings 0x7f09000b
+int id action_settings 0x7f09000d
 int id container 0x7f090000
 int id date 0x7f090009
 int id distance 0x7f090004
 int id list 0x7f090008
 int id location 0x7f090005
 int id mapView 0x7f090007
+int id mini_distance 0x7f09000c
 int id mini_mode_view 0x7f09000a
+int id mini_walk 0x7f09000b
 int id pager 0x7f090002
 int id service_switch 0x7f090006
 int id tab 0x7f090001
