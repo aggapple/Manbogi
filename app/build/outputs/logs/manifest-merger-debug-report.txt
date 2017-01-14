@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:2:1-49:12
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:2:1-52:12
 	package
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:3:5-35
 		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
@@ -48,7 +48,7 @@ ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:19:5-7
 	android:name
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:19:22-73
 application
-ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:23:5-47:19
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:23:5-50:19
 MERGED from [com.android.support:support-v4:23.4.0] D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
 MERGED from [com.naver.maps.open:naver-map-api:2.1.2] D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\exploded-aar\com.naver.maps.open\naver-map-api\2.1.2\AndroidManifest.xml:11:5-14:19
 	android:screenOrientation
@@ -88,8 +88,14 @@ ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:41:9-5
 	android:name
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:41:19-47
 service#com.aggapple.manbogi.service.MiniModeService
-ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:43:9-46:19
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:43:9-45:38
 	android:enabled
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:45:13-35
 	android:name
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:44:13-52
+service#com.aggapple.manbogi.service.WalkSensorService
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:47:9-49:38
+	android:enabled
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:49:13-35
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:48:13-54

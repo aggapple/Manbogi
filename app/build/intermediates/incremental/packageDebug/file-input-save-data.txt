@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Jan 15 01:40:35 KST 2017
+#Sun Jan 15 04:34:09 KST 2017
 25.file=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\selector_btn_navermap_bg.xml
 25.base=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\resources-debug.ap_
 22.set=ANDROID_RESOURCE

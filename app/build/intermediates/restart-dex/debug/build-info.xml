@@ -5,40 +5,33 @@
     density="xxxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="89275551789915"
+    timestamp="99618963583231"
     token="4236648486742076521"
-    verifier="METHOD_DELETED" >
+    verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="356" />
+        duration="474" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="75" />
+        duration="25" />
     <task
         name="verifier"
-        duration="10" />
+        duration="5" />
 
     <artifact
-        location="D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_3\classes.dex"
-        type="DEX" />
+        location="D:\Liberty\Dev\studio\Manbogi\app\build\outputs\apk\app-debug.apk"
+        type="MAIN" />
 
     <build
-        timestamp="89205840569938"
+        timestamp="99618963583231"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="D:\Liberty\Dev\studio\Manbogi\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
-    </build>
-    <build
-        timestamp="89275551789915"
-        verifier="METHOD_DELETED" >
-        <artifact
-            location="D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_3\classes.dex"
-            type="DEX" />
     </build>
 
 </instant-run>

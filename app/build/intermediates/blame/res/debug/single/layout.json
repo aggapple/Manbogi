@@ -16,11 +16,11 @@
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\layout\\main.xml"
     },
     {
-        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\layout\\mini_mode_service.xml",
-        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\layout\\mini_mode_service.xml"
-    },
-    {
         "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main_record_fragment_item.xml",
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\layout\\main_record_fragment_item.xml"
+    },
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\layout\\mini_mode_service.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\layout\\mini_mode_service.xml"
     }
 ]

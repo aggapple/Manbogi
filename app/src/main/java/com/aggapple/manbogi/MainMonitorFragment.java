@@ -2,6 +2,7 @@ package com.aggapple.manbogi;
 
 import com.aggapple.manbogi.base.BaseApplication;
 import com.aggapple.manbogi.base.BaseFragment;
+import com.aggapple.manbogi.utils.SocialUtils;
 import com.nhn.android.maps.NMapActivity;
 import com.nhn.android.maps.NMapContext;
 import com.nhn.android.maps.NMapController;
@@ -12,6 +13,7 @@ import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,190 +26,243 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class MainMonitorFragment extends BaseFragment {
 
-	private CheckBox mServiceSwitch;
-	private TextView mWalk, mDistance, mLoation;
+    private CheckBox mServiceSwitch;
+    private TextView mWalk, mDistance, mLoation;
 
-	private NMapContext mMapContext;
-	private NMapLocationManager mMapLocationManager;
-	private static final String CLIENT_ID = "Narc0Em43EdZIvjgnLve";// 애플리케이션 클라이언트 아이디 값
+    private NMapContext mMapContext;
+    private NMapLocationManager mMapLocationManager;
+    private static final String CLIENT_ID = "Narc0Em43EdZIvjgnLve";// 애플리케이션 클라이언트 아이디 값
 
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mMapContext =  new NMapContext(super.getActivity());
-		mMapContext.onCreate();
-	}
+    private static final int WALK_REST_LIMIT = 3;
+    private double mTotDistance = 0.0d;
+    private double mPrevLat = 0.0d;
+    private double mPrevLng = 0.0d;
+    private long mTotWalk = 0l;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.main_monitor_fragment, container, false);
-	}
+    private CountDownTimer mConuntDownTimer;
+    private boolean mIsWalking = false;
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 
-		initUI();
-		initMap();
-		updateUI();
-	}
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMapContext = new NMapContext(super.getActivity());
+        mMapContext.onCreate();
+    }
 
-	private void initUI() {
-		mWalk = (TextView) getView().findViewById(R.id.walk);
-		mDistance = (TextView) getView().findViewById(R.id.distance);
-		mLoation = (TextView) getView().findViewById(R.id.location);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.main_monitor_fragment, container, false);
+    }
 
-		mServiceSwitch = (CheckBox) getView().findViewById(R.id.service_switch);
-		mServiceSwitch.setOnCheckedChangeListener(onCheckedChange);
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-	private void initMap()	 {
-		// Fragment에 포함된 NMapView 객체 찾기
-		NMapView mapView = findMapView(super.getView());
-		if (mapView == null) {
-			throw new IllegalArgumentException("NMapFragment dose not have an instance of NMapView.");
-		}
-		mapView.setClientId(CLIENT_ID);
+        initUI();
+        initMap();
+        updateUI();
+    }
 
-		// NMapActivity를 상속하지 않는 경우에는 NMapView 객체 생성후 반드시 setupMapView()를 호출해야함.
-		mMapContext.setupMapView(mapView);
+    private void initUI() {
+        mWalk = (TextView) getView().findViewById(R.id.walk);
+        mDistance = (TextView) getView().findViewById(R.id.distance);
+        mLoation = (TextView) getView().findViewById(R.id.location);
 
-		NMapLocationManager mLocationManager = new NMapLocationManager(getActivity());
-		mLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
-		mLocationManager.enableMyLocation(true);
+        mServiceSwitch = (CheckBox) getView().findViewById(R.id.service_switch);
+        mServiceSwitch.setOnCheckedChangeListener(onCheckedChange);
+    }
 
-		// location manager
-		mMapLocationManager = new NMapLocationManager(getActivity());
-		mMapLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
+    private void initMap() {
+        // Fragment에 포함된 NMapView 객체 찾기
+        NMapView mapView = findMapView(super.getView());
+        if (mapView == null) {
+            throw new IllegalArgumentException("NMapFragment dose not have an instance of NMapView.");
+        }
+        mapView.setClientId(CLIENT_ID);
 
-		mMapContext.setMapDataProviderListener(new NMapActivity.OnDataProviderListener() {
-			@Override
-			public void onReverseGeocoderResponse(NMapPlacemark nMapPlacemark, NMapError nMapError) {
-				if(nMapError!=null){
-					Toast.makeText(getActivity(), ""+nMapError, Toast.LENGTH_SHORT).show();
-				}else {
-					mLoation.setText(nMapPlacemark.toString());
-				}
-			}
-		});
+        // NMapActivity를 상속하지 않는 경우에는 NMapView 객체 생성후 반드시 setupMapView()를 호출해야함.
+        mMapContext.setupMapView(mapView);
 
-	}
-	private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
-		@Override
-		public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
-			//TODO:: 리소스를 다이렉트로 사용할 경우 앱 종료 시 접근오류가 발생할 수 있음
+        NMapLocationManager mLocationManager = new NMapLocationManager(getActivity());
+        mLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
+        mLocationManager.enableMyLocation(true);
 
-			mMapContext.findPlacemarkAtLocation(nGeoPoint.getLongitude(), nGeoPoint.getLatitude());
+        // location manager
+        mMapLocationManager = new NMapLocationManager(getActivity());
+        mMapLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
+
+        mMapContext.setMapDataProviderListener(new NMapActivity.OnDataProviderListener() {
+            @Override
+            public void onReverseGeocoderResponse(NMapPlacemark nMapPlacemark, NMapError nMapError) {
+                if (nMapError != null) {
+                    Toast.makeText(getActivity(), "" + nMapError, Toast.LENGTH_SHORT).show();
+                } else {
+                    mLoation.setText(nMapPlacemark.toString());
+                }
+            }
+        });
+
+    }
+
+    private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
+        @Override
+        public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
+            MainMonitorObserver.getInstance().notifyObservers(nGeoPoint);
+
 //			Toast.makeText(getActivity(), ""+nGeoPoint.getLatitude()+", "+nGeoPoint.getLongitude(), Toast.LENGTH_SHORT).show();
-			return true;
-		}
+            return true;
+        }
 
 
-		@Override
-		public void onLocationUpdateTimeout(NMapLocationManager nMapLocationManager) {
+        @Override
+        public void onLocationUpdateTimeout(NMapLocationManager nMapLocationManager) {
 
-		}
+        }
 
-		@Override
-		public void onLocationUnavailableArea(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
+        @Override
+        public void onLocationUnavailableArea(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
 
-		}
-	};
+        }
+    };
 
 
+    public void updateUI() {
+        if (getView() == null)
+            return;
+    }
 
-	public void updateUI() {
-		if (getView() == null)
-			return;
-	}
+    public void updateUI(Object data) {
+        if (getView() == null)
+            return;
+        if (data instanceof NGeoPoint) {
+            mMapContext.findPlacemarkAtLocation(((NGeoPoint) data).getLongitude(), ((NGeoPoint) data).getLatitude());
+            if (((MainActivity) getActivity()).isStart()) {
+                double calcDistance = SocialUtils.calcDistance(mPrevLat, mPrevLng, ((NGeoPoint) data).getLatitude(), ((NGeoPoint) data).getLongitude());
+//                Toast.makeText(getActivity(), "" + calcDistance, Toast.LENGTH_SHORT).show();
+                if (mIsWalking) {
+                    mTotDistance += calcDistance;
+                    mDistance.setText(SocialUtils.convertDistance(mTotDistance));
+                }
+            }
+            mPrevLat = ((NGeoPoint) data).getLatitude();
+            mPrevLng = ((NGeoPoint) data).getLongitude();
+        } else if (data instanceof Float) {
+            if (((MainActivity) getActivity()).isStart()) {
+                mTotWalk += 1;
+                mWalk.setText("" + mTotWalk);
+                mIsWalking = true;
 
-	private OnCheckedChangeListener onCheckedChange = new OnCheckedChangeListener() {
+                if (mConuntDownTimer != null)
+                    mConuntDownTimer.cancel();
+                mConuntDownTimer = new CountDownTimer(WALK_REST_LIMIT * 1000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
 
-		@Override
-		public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
-			if (isChecked) {
-				mServiceSwitch.setText("STOP");
-				mServiceSwitch.setBackgroundColor(0xFF0000FF);
+                    @Override
+                    public void onFinish() {
+                        // 2초의 시간동안 걸음의 수가 증가하지 않으면 멈춰있는것으로 간주한다.
+                        // 멈춰있는 시간동안 이동거리는 증가하지 않는다.
+                        mIsWalking = false;
+                    }
+                };
+                mConuntDownTimer.start();
+            }
+        }
+    }
 
-				((MainActivity) getActivity()).startMiniService();
+    private OnCheckedChangeListener onCheckedChange = new OnCheckedChangeListener() {
 
-			} else {
-				mServiceSwitch.setText("START");
-				mServiceSwitch.setBackgroundColor(0xFFFF0000);
+        @Override
+        public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
+            if (isChecked) {
+                mServiceSwitch.setText("STOP");
+                mServiceSwitch.setBackgroundColor(0xFF0000FF);
 
-				((MainActivity) getActivity()).stopMiniService();
-			}
-		}
-	};
+                ((MainActivity) getActivity()).startWalkService();
+                ((MainActivity) getActivity()).startMiniService();
+                ((MainActivity) getActivity()).setStart(true);
 
-	/**
-	 * Fragment에 포함된 NMapView 객체를 반환함
-	 */
-	private NMapView findMapView(View v) {
+            } else {
+                mServiceSwitch.setText("START");
+                mServiceSwitch.setBackgroundColor(0xFFFF0000);
 
-		if (!(v instanceof ViewGroup)) {
-			return null;
-		}
+                ((MainActivity) getActivity()).stopWalkService();
+                ((MainActivity) getActivity()).stopMiniService();
+                ((MainActivity) getActivity()).setStart(false);
+            }
+        }
+    };
 
-		ViewGroup vg = (ViewGroup)v;
-		if (vg instanceof NMapView) {
-			return (NMapView)vg;
-		}
+    /**
+     * Fragment에 포함된 NMapView 객체를 반환함
+     */
+    private NMapView findMapView(View v) {
 
-		for (int i = 0; i < vg.getChildCount(); i++) {
+        if (!(v instanceof ViewGroup)) {
+            return null;
+        }
 
-			View child = vg.getChildAt(i);
-			if (!(child instanceof ViewGroup)) {
-				continue;
-			}
+        ViewGroup vg = (ViewGroup) v;
+        if (vg instanceof NMapView) {
+            return (NMapView) vg;
+        }
 
-			NMapView mapView = findMapView(child);
-			if (mapView != null) {
-				return mapView;
-			}
-		}
-		return null;
-	}
+        for (int i = 0; i < vg.getChildCount(); i++) {
 
-	@Override
-	public void onStart(){
-		super.onStart();
+            View child = vg.getChildAt(i);
+            if (!(child instanceof ViewGroup)) {
+                continue;
+            }
 
-		mMapContext.onStart();
-	}
+            NMapView mapView = findMapView(child);
+            if (mapView != null) {
+                return mapView;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
+    @Override
+    public void onStart() {
+        super.onStart();
 
-		mMapContext.onResume();
-	}
+        mMapContext.onStart();
+    }
 
-	@Override
-	public void onPause() {
-		super.onPause();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-		mMapContext.onPause();
-	}
+        mMapContext.onResume();
+    }
 
-	@Override
-	public void onStop() {
+    @Override
+    public void onPause() {
+        super.onPause();
 
-		mMapContext.onStop();
+        mMapContext.onPause();
+    }
 
-		super.onStop();
-	}
+    @Override
+    public void onStop() {
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-	}
+        mMapContext.onStop();
 
-	@Override
-	public void onDestroy() {
-		mMapContext.onDestroy();
+        super.onStop();
+    }
 
-		super.onDestroy();
-	}
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        mMapContext.onDestroy();
+
+        super.onDestroy();
+    }
 
 }

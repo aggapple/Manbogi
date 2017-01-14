@@ -43,8 +43,10 @@
 
         <service
             android:name="com.aggapple.manbogi.service.MiniModeService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true" />
+        <service
+            android:name="com.aggapple.manbogi.service.WalkSensorService"
+            android:enabled="true" />
     </application>
 
 </manifest>

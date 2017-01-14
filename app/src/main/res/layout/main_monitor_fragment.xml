@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="30dp"
-            android:text="12345"
+            android:text="0"
             android:textSize="32dp" />
     </LinearLayout>
 
@@ -38,7 +38,7 @@
         android:layout_marginTop="30dp"
         android:gravity="right"
         android:paddingRight="30dp"
-        android:text="20000Km"
+        android:text="0 m"
         android:textSize="28dp" />
 
     <View
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="현재 위치를 표시할 수 없습니다."
+        android:text="현재 위치를 확인중입니다."
         android:textSize="16dp" />
 
     <CheckBox
