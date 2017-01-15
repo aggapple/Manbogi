@@ -20,6 +20,14 @@
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\shape_stroke_mini.xml"
     },
     {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_green.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_green.xml"
+    },
+    {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\btn_text_green.xml",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\btn_text_green.xml"
+    },
+    {
         "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\shape_stroke.xml",
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable\\shape_stroke.xml"
     }

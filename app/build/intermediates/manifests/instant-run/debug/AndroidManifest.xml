@@ -47,6 +47,10 @@
         <service
             android:name="com.aggapple.manbogi.service.WalkSensorService"
             android:enabled="true" />
+
+        <provider
+            android:name="com.aggapple.manbogi.provider.DBProvider"
+            android:authorities="com.provider.manbogi" />
     </application>
 
 </manifest>

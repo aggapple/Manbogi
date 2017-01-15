@@ -1,17 +1,5 @@
 package com.aggapple.manbogi;
 
-import com.aggapple.manbogi.base.BaseApplication;
-import com.aggapple.manbogi.base.BaseFragment;
-import com.aggapple.manbogi.utils.SocialUtils;
-import com.nhn.android.maps.NMapActivity;
-import com.nhn.android.maps.NMapContext;
-import com.nhn.android.maps.NMapController;
-import com.nhn.android.maps.NMapLocationManager;
-import com.nhn.android.maps.NMapView;
-import com.nhn.android.maps.maplib.NGeoPoint;
-import com.nhn.android.maps.nmapmodel.NMapError;
-import com.nhn.android.maps.nmapmodel.NMapPlacemark;
-
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -20,9 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.aggapple.manbogi.base.BaseFragment;
+import com.aggapple.manbogi.data.ManbogiData;
+import com.aggapple.manbogi.utils.SocialUtils;
+import com.nhn.android.maps.NMapActivity;
+import com.nhn.android.maps.NMapContext;
+import com.nhn.android.maps.NMapLocationManager;
+import com.nhn.android.maps.NMapView;
+import com.nhn.android.maps.maplib.NGeoPoint;
+import com.nhn.android.maps.nmapmodel.NMapError;
+import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 
 public class MainMonitorFragment extends BaseFragment {
 
@@ -42,6 +41,12 @@ public class MainMonitorFragment extends BaseFragment {
     private CountDownTimer mConuntDownTimer;
     private boolean mIsWalking = false;
 
+    public long getTotWalk() {
+        return mTotWalk;
+    }
+    public double getTotDistance() {
+        return mTotDistance;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +76,11 @@ public class MainMonitorFragment extends BaseFragment {
 
         mServiceSwitch = (CheckBox) getView().findViewById(R.id.service_switch);
         mServiceSwitch.setOnCheckedChangeListener(onCheckedChange);
+    }
+
+    private void initValue() {
+        mTotDistance = 0.0d;
+        mTotWalk = 0l;
     }
 
     private void initMap() {
@@ -126,10 +136,19 @@ public class MainMonitorFragment extends BaseFragment {
         }
     };
 
-
     public void updateUI() {
         if (getView() == null)
             return;
+
+        ManbogiData data = ((MainActivity) getActivity()).loadPreferences();
+        if (data != null) {
+            if (data.isRunning()) {
+                mTotWalk = data.getWalk();
+                mTotDistance = data.getDistance();
+            }
+        }
+        mWalk.setText("" + mTotWalk);
+        mDistance.setText("" + mTotDistance);
     }
 
     public void updateUI(Object data) {
@@ -137,43 +156,58 @@ public class MainMonitorFragment extends BaseFragment {
             return;
         if (data instanceof NGeoPoint) {
             mMapContext.findPlacemarkAtLocation(((NGeoPoint) data).getLongitude(), ((NGeoPoint) data).getLatitude());
-            if (((MainActivity) getActivity()).isStart()) {
-                double calcDistance = SocialUtils.calcDistance(mPrevLat, mPrevLng, ((NGeoPoint) data).getLatitude(), ((NGeoPoint) data).getLongitude());
-//                Toast.makeText(getActivity(), "" + calcDistance, Toast.LENGTH_SHORT).show();
-                if (mIsWalking && (mPrevLat != 0 || mPrevLng != 0)) {
-                    mTotDistance += calcDistance;
-                    mDistance.setText(SocialUtils.convertDistance(mTotDistance));
-                    if (((MainActivity) getActivity()).getMiniModeService() != null) {
-                        ((MainActivity) getActivity()).getMiniModeService().setMiniDistance(SocialUtils.convertDistance(mTotDistance));
+            double calcDistance = SocialUtils.calcDistance(mPrevLat, mPrevLng, ((NGeoPoint) data).getLatitude(), ((NGeoPoint) data).getLongitude());
+
+            if (((MainActivity) getActivity()).mCurrentMode == MainActivity.STATE.MODE.STANDARD_DISTANCE) {
+                if (((MainActivity) getActivity()).isStart()) {
+                    if (mIsWalking && (mPrevLat != 0 || mPrevLng != 0)) {
+                        mTotDistance += calcDistance;
+                        mDistance.setText(SocialUtils.convertDistance(mTotDistance));
+                        ((MainActivity) getActivity()).savePreferences(System.currentTimeMillis(), mTotWalk, mTotDistance);
+                        if (((MainActivity) getActivity()).getMiniModeService() != null) {
+                            ((MainActivity) getActivity()).getMiniModeService().setMiniDistance(SocialUtils.convertDistance(mTotDistance));
+                        }
                     }
                 }
+                mPrevLat = ((NGeoPoint) data).getLatitude();
+                mPrevLng = ((NGeoPoint) data).getLongitude();
             }
-            mPrevLat = ((NGeoPoint) data).getLatitude();
-            mPrevLng = ((NGeoPoint) data).getLongitude();
+
         } else if (data instanceof Float) {
             if (((MainActivity) getActivity()).isStart()) {
                 mTotWalk += 1;
                 mWalk.setText("" + mTotWalk);
+                if (((MainActivity) getActivity()).mCurrentMode == MainActivity.STATE.MODE.STANDARD_WALK) {
+                    mTotDistance += 0.5d;
+                    mDistance.setText(SocialUtils.convertDistance(mTotDistance));
+                } else {
+                    mIsWalking = true;
+
+                    if (mConuntDownTimer != null)
+                        mConuntDownTimer.cancel();
+                    mConuntDownTimer = new CountDownTimer(WALK_REST_LIMIT * 1000, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            // 2초의 시간동안 걸음의 수가 증가하지 않으면 멈춰있는것으로 간주한다.
+                            // 멈춰있는 시간동안 이동거리는 증가하지 않는다.
+                            mIsWalking = false;
+                        }
+                    };
+                    mConuntDownTimer.start();
+                }
+
                 if (((MainActivity) getActivity()).getMiniModeService() != null) {
                     ((MainActivity) getActivity()).getMiniModeService().setMiniWalk(mTotWalk);
+                    if (((MainActivity) getActivity()).mCurrentMode == MainActivity.STATE.MODE.STANDARD_WALK) {
+                        ((MainActivity) getActivity()).getMiniModeService().setMiniDistance(SocialUtils.convertDistance(mTotDistance));
+                    }
                 }
-                mIsWalking = true;
+                ((MainActivity) getActivity()).savePreferences(System.currentTimeMillis(), mTotWalk, mTotDistance);
 
-                if (mConuntDownTimer != null)
-                    mConuntDownTimer.cancel();
-                mConuntDownTimer = new CountDownTimer(WALK_REST_LIMIT * 1000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        // 2초의 시간동안 걸음의 수가 증가하지 않으면 멈춰있는것으로 간주한다.
-                        // 멈춰있는 시간동안 이동거리는 증가하지 않는다.
-                        mIsWalking = false;
-                    }
-                };
-                mConuntDownTimer.start();
             }
         }
     }
@@ -182,7 +216,8 @@ public class MainMonitorFragment extends BaseFragment {
 
         @Override
         public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
-            if (isChecked) {
+            ((MainActivity) getActivity()).updateRunningState(isChecked);
+            if (isChecked) { // State is start
                 mServiceSwitch.setText("STOP");
                 mServiceSwitch.setBackgroundColor(0xFF0000FF);
 
@@ -190,24 +225,21 @@ public class MainMonitorFragment extends BaseFragment {
                 ((MainActivity) getActivity()).startMiniService();
                 ((MainActivity) getActivity()).setStart(true);
 
-            } else {
+                updateUI();
+
+            } else { // State is stop
                 mServiceSwitch.setText("START");
                 mServiceSwitch.setBackgroundColor(0xFFFF0000);
 
                 ((MainActivity) getActivity()).stopWalkService();
                 ((MainActivity) getActivity()).stopMiniService();
                 ((MainActivity) getActivity()).setStart(false);
+
+                ((MainActivity) getActivity()).saveDB();
+                initValue();
             }
         }
     };
-
-    public long getTotWalk() {
-        return mTotWalk;
-    }
-
-    public double getTotDistance() {
-        return mTotDistance;
-    }
 
     /**
      * Fragment에 포함된 NMapView 객체를 반환함

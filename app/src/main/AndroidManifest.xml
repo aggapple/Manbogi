@@ -47,6 +47,9 @@
         <service
             android:name=".service.WalkSensorService"
             android:enabled="true" />
+
+        <provider android:name=".provider.DBProvider"
+            android:authorities="com.provider.manbogi"/>
     </application>
 
 </manifest>

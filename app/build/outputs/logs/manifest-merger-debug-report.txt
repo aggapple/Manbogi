@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:2:1-52:12
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:2:1-55:12
 	package
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:3:5-35
 		INJECTED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml
@@ -48,7 +48,7 @@ ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:19:5-7
 	android:name
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:19:22-73
 application
-ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:23:5-50:19
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:23:5-53:19
 MERGED from [com.android.support:support-v4:23.4.0] D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
 MERGED from [com.naver.maps.open:naver-map-api:2.1.2] D:\Liberty\Dev\studio\Manbogi\app\build\intermediates\exploded-aar\com.naver.maps.open\naver-map-api\2.1.2\AndroidManifest.xml:11:5-14:19
 	android:screenOrientation
@@ -99,3 +99,9 @@ ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:47:9-4
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:49:13-35
 	android:name
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:48:13-54
+provider#com.aggapple.manbogi.provider.DBProvider
+ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:51:9-52:57
+	android:authorities
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:52:13-55
+	android:name
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:51:19-54

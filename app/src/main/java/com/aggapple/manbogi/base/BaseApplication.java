@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.aggapple.manbogi.utils.BaseP;
+
 public class BaseApplication extends Application {
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		registerActivityLifecycleCallbacks(new MyActivityLifecycleCallbacks());
-
+		BaseP.c().INIT(this);
 	}
 
 	private AppStatus mAppStatus;

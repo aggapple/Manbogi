@@ -1,30 +1,15 @@
 package com.aggapple.manbogi;
 
-import com.aggapple.manbogi.MainActivity.STATE.PAGE;
-import com.aggapple.manbogi.base.BaseActivity;
-import com.aggapple.manbogi.service.MiniModeService;
-import com.aggapple.manbogi.service.WalkSensorService;
-import com.aggapple.manbogi.utils.CheckerHelper;
-import com.aggapple.manbogi.utils.IME;
-import com.aggapple.manbogi.utils.SocialUtils;
-import com.aggapple.manbogi.views.BaseTabFragmentPagerAdapter;
-import com.aggapple.manbogi.views.CheckerHelperLinearLayout;
-import com.nhn.android.maps.NMapContext;
-import com.nhn.android.maps.NMapView;
-import com.nhn.android.maps.maplib.NGeoPoint;
-import com.nhn.android.maps.nmapmodel.NMapPlacemark;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
@@ -34,6 +19,25 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.aggapple.manbogi.MainActivity.STATE.PAGE;
+import com.aggapple.manbogi.base.BaseActivity;
+import com.aggapple.manbogi.data.ManbogiData;
+import com.aggapple.manbogi.provider.DBHelper;
+import com.aggapple.manbogi.provider.DBProvider;
+import com.aggapple.manbogi.service.MiniModeService;
+import com.aggapple.manbogi.service.WalkSensorService;
+import com.aggapple.manbogi.utils.AppManager;
+import com.aggapple.manbogi.utils.BaseP;
+import com.aggapple.manbogi.utils.CheckerHelper;
+import com.aggapple.manbogi.utils.IME;
+import com.aggapple.manbogi.utils.SocialUtils;
+import com.aggapple.manbogi.views.BaseTabFragmentPagerAdapter;
+import com.aggapple.manbogi.views.CheckerHelperLinearLayout;
+import com.google.gson.Gson;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -43,9 +47,14 @@ public class MainActivity extends BaseActivity implements Observer {
         enum PAGE {
             MONITOR, RECORD
         }
+
+        enum MODE {
+            STANDARD_WALK, STANDARD_DISTANCE
+        }
     }
 
     public PAGE mCurrentPage = PAGE.MONITOR;
+    public STATE.MODE mCurrentMode = STATE.MODE.STANDARD_WALK;
 
     private ViewPager mPager;
     private ChargeTabFragmentPagerAdapter mAdapter;
@@ -163,6 +172,7 @@ public class MainActivity extends BaseActivity implements Observer {
 
     public void setStart(boolean state) {
         mIsStart = state;
+        mIsMiniMode = state == true ? true : false;
     }
 
     public boolean isStart() {
@@ -177,9 +187,6 @@ public class MainActivity extends BaseActivity implements Observer {
     protected void onStart() {
         super.onStart();
         if (mIsMiniMode) {
-//            Intent intent = new Intent();
-//            intent.setClass(this, MiniModeService.class);
-//            stopService(intent);
             if (mConnection != null)
                 unbindService(mConnection);
         }
@@ -193,22 +200,18 @@ public class MainActivity extends BaseActivity implements Observer {
             Intent intent = new Intent();
             intent.setClass(this, MiniModeService.class);
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-//            startService(intent);
         }
     }
 
     public void stopMiniService() {
-        if (isServiceRunningCheck("com.aggapple.manbogi.service.MiniModeService")) {
-//            Intent intent = new Intent();
-//            intent.setClass(this, MiniModeService.class);
-//            stopService(intent);
+        if (AppManager.isServiceRunningCheck(this, "com.aggapple.manbogi.service.MiniModeService")) {
             if (mConnection != null)
                 unbindService(mConnection);
         }
     }
 
     public void startWalkService() {
-        if (!isServiceRunningCheck("com.aggapple.manbogi.service.WalkSensorService")) {
+        if (!AppManager.isServiceRunningCheck(this, "com.aggapple.manbogi.service.WalkSensorService")) {
             Intent intent = new Intent();
             intent.setClass(this, WalkSensorService.class);
             startService(intent);
@@ -216,7 +219,7 @@ public class MainActivity extends BaseActivity implements Observer {
     }
 
     public void stopWalkService() {
-        if (isServiceRunningCheck("com.aggapple.manbogi.service.WalkSensorService")) {
+        if (AppManager.isServiceRunningCheck(this, "com.aggapple.manbogi.service.WalkSensorService")) {
             Intent intent = new Intent();
             intent.setClass(this, WalkSensorService.class);
             stopService(intent);
@@ -238,16 +241,6 @@ public class MainActivity extends BaseActivity implements Observer {
         super.onDestroy();
     }
 
-    public boolean isServiceRunningCheck(String serviceName) {
-        ActivityManager manager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
-        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceName.equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void update(Observable observable, Object data) {
         if (observable instanceof MainMonitorObserver) {
@@ -255,6 +248,115 @@ public class MainActivity extends BaseActivity implements Observer {
                 ((MainMonitorFragment) mAdapter.getItem(PAGE.MONITOR.ordinal())).updateUI(data);
             }
         }
+    }
+
+    public static final String SAVE_PREFERENCES = "SAVE_PREFERENCES";
+
+    public void savePreferences(long date, long walk, double distance) {
+        ManbogiData data = new ManbogiData(date, walk, distance);
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        BaseP.c().set(SAVE_PREFERENCES, json);
+    }
+
+    public ManbogiData loadPreferences() {
+        Gson gson = new Gson();
+        return gson.fromJson(BaseP.c().getString(SAVE_PREFERENCES), ManbogiData.class);
+    }
+
+    public void updateRunningState(boolean isRunning) {
+        Gson gson = new Gson();
+        ManbogiData data = gson.fromJson(BaseP.c().getString(SAVE_PREFERENCES), ManbogiData.class);
+        if (data != null) {
+            data.setRunState(isRunning);
+            BaseP.c().set(SAVE_PREFERENCES, gson.toJson(data));
+        }
+    }
+
+    public void saveDB() {
+        String json = BaseP.c().getString(SAVE_PREFERENCES);
+        Gson gson = new Gson();
+        ManbogiData manbogiData = gson.fromJson(json, ManbogiData.class);
+
+
+        Cursor c = getContentResolver().query(DBProvider.CONTENT_URI, new String[]{DBHelper._ID, DBHelper._DATE, DBHelper._WALK, DBHelper._DISTANCE}, null, null, "_id ASC");
+
+        boolean isInsertData = true;
+        if (c != null) {
+            while (c.moveToNext()) {
+                String date = c.getString(1);
+                if (getDate(Long.parseLong(date), "yyyy.MM.dd").equals(getDate(manbogiData.getDate(), "yyyy.MM.dd"))) {
+                    isInsertData = false;
+                    updateData(c, manbogiData);
+                    break;
+                }
+            }
+            c.close();
+        }
+
+        if (isInsertData) {
+            insertData(manbogiData);
+        }
+
+        ((MainRecordFragment) mAdapter.getItem(PAGE.RECORD.ordinal())).updateUI();
+        BaseP.c().set(SAVE_PREFERENCES, gson.toJson(new ManbogiData()));
+    }
+
+    public void insertData(ManbogiData data) {
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper._DATE, "" + data.getDate());
+        cv.put(DBHelper._WALK, "" + data.getWalk());
+        cv.put(DBHelper._DISTANCE, "" + data.getDistance());
+
+        Uri retUri = getContentResolver().insert(DBProvider.CONTENT_URI, cv);
+    }
+
+    public void updateData(Cursor c, ManbogiData data) {
+        ContentValues cv = new ContentValues();
+        long walk = Long.parseLong(c.getString(2));
+        double distance = Double.parseDouble(c.getString(3));
+
+        cv.put(DBHelper._WALK, "" + (long) (walk + data.getWalk()));
+        cv.put(DBHelper._DISTANCE, "" + (double) (distance + data.getDistance()));
+        int updateCnt = getContentResolver().update(DBProvider.CONTENT_URI, cv, DBHelper._ID + "=" + data.getId(), null);
+        Toast.makeText(MainActivity.this, "" + updateCnt + ", " + walk + ", " + data.getWalk() + ", " + distance + ", " + data.getDistance(), Toast.LENGTH_SHORT).show();
+    }
+
+    public ArrayList<ManbogiData> queryAllData() {
+        ArrayList<ManbogiData> dataList = new ArrayList<ManbogiData>();
+        Cursor c = getContentResolver().query(DBProvider.CONTENT_URI, new String[]{DBHelper._ID, DBHelper._DATE, DBHelper._WALK, DBHelper._DISTANCE}, null, null, "_id ASC");
+
+        boolean isInserData = true;
+        int index = 0;
+        if (c != null) {
+            while (c.moveToNext()) {
+                int id = c.getInt(0);
+                String date = c.getString(1);
+                String walk = c.getString(2);
+                String distance = c.getString(3);
+                ManbogiData data = new ManbogiData(id, Long.parseLong(date), Long.parseLong(walk), Double.parseDouble(distance));
+                dataList.add(index, data);
+                index++;
+            }
+            c.close();
+        }
+
+        return dataList;
+    }
+
+    public boolean deleteData(int index) {
+        int delCnt = getContentResolver().delete(DBProvider.CONTENT_URI, DBHelper._ID + "=" + index, null);
+        return delCnt > 0;
+    }
+
+    public static String getDate(long milliSeconds, String dateFormat) {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
     }
 
 }
