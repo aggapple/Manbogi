@@ -1,10 +1,10 @@
 package com.aggapple.manbogi.utils;
 
-import java.util.Map;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import java.util.Map;
 
 public class BaseP {
 

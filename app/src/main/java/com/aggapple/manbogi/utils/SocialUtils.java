@@ -18,10 +18,10 @@ public class SocialUtils {
         return ret;
     }
 
-    public static String convertDistance(double distance){
-        double rslt = (double) Math.round(distance*100) / 100000.0d;
+    public static String convertDistance(double distance) {
+        double rslt = (double) Math.round(distance * 100) / 100000.0d;
         String result = rslt + " km";
-        if (rslt < 1.0d) result = Math.round(distance*10) / 10 + " m";
+        if (rslt < 1.0d) result = Math.round(distance * 10) / 10 + " m";
 
         return result;
     }

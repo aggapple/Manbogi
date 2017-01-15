@@ -1,7 +1,6 @@
 package com.aggapple.manbogi;
 
 import java.util.Observable;
-import java.util.Observer;
 
 public class MainMonitorObserver extends Observable {
     public static MainMonitorObserver INSTANCE = new MainMonitorObserver();

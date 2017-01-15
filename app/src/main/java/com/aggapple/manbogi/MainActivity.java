@@ -58,13 +58,15 @@ public class MainActivity extends BaseActivity implements Observer {
         }
     }
 
-    public PAGE mCurrentPage = PAGE.MONITOR;
-    public STATE.MODE mCurrentMode = STATE.MODE.STANDARD_WALK;
-
+    /* Pager 관련 변수 */
     private ViewPager mPager;
     private ChargeTabFragmentPagerAdapter mAdapter;
     private CheckerHelperLinearLayout mTab;
 
+    public PAGE mCurrentPage = PAGE.MONITOR;
+    public STATE.MODE mCurrentMode = STATE.MODE.STANDARD_WALK;
+
+    /* DrawerOption 관련 변수 */
     private DrawerLayout mDrawerLayout;
     private LinearLayout mDrawerView;
 
@@ -72,13 +74,11 @@ public class MainActivity extends BaseActivity implements Observer {
     private SeekBar mStepController, mSensorController;
     private Button mSetDefault;
 
+    /* MiniMode 및 시작-종료 관련 플래그 */
     private long mBackPressedTime = 0;
     private ServiceConnection mConnection;
-
     private boolean mIsMiniMode = false;
-
     private boolean mIsStart = false;
-
     private MiniModeService mMiniModeService;
 
     @Override
@@ -144,6 +144,7 @@ public class MainActivity extends BaseActivity implements Observer {
         };
     }
 
+    /* 옵션값 초기화 */
     public void initSettings() {
         runOnUiThread(new Runnable() {
             @Override
@@ -156,6 +157,7 @@ public class MainActivity extends BaseActivity implements Observer {
         });
     }
 
+    /* Pager관련 */
     public class ChargeTabFragmentPagerAdapter extends BaseTabFragmentPagerAdapter {
 
         public ChargeTabFragmentPagerAdapter(FragmentManager fm, CheckerHelper ch, ViewPager pager) {
@@ -204,23 +206,7 @@ public class MainActivity extends BaseActivity implements Observer {
         }
     };
 
-    @Override
-    public void onBackPressed() {
-
-        if (System.currentTimeMillis() - mBackPressedTime < 3000) {
-            finish();
-
-            return;
-        }
-        Toast.makeText(this, "뒤로가기를 한번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT).show();
-        mBackPressedTime = System.currentTimeMillis();
-    }
-
-    public void setStart(boolean state) {
-        mIsStart = state;
-        mIsMiniMode = state == true ? true : false;
-    }
-
+    /* MiniMode 및 가속센서 service 관련 */
     public boolean isStart() {
         return mIsStart;
     }
@@ -229,24 +215,9 @@ public class MainActivity extends BaseActivity implements Observer {
         mIsMiniMode = true;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mIsMiniMode) {
-            if (mConnection != null)
-                unbindService(mConnection);
-        }
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mIsMiniMode) {
-            Intent intent = new Intent();
-            intent.setClass(this, MiniModeService.class);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        }
+    public void setStart(boolean state) {
+        mIsStart = state;
+        mIsMiniMode = state == true ? true : false;
     }
 
     public void stopMiniService() {
@@ -279,6 +250,37 @@ public class MainActivity extends BaseActivity implements Observer {
             return null;
     }
 
+    /* 생명주기 관리 */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mIsMiniMode) {
+            if (mConnection != null)
+                unbindService(mConnection);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mIsMiniMode) {
+            Intent intent = new Intent();
+            intent.setClass(this, MiniModeService.class);
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - mBackPressedTime < 3000) {
+            finish();
+            return;
+        }
+        Toast.makeText(this, "뒤로가기를 한번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT).show();
+        mBackPressedTime = System.currentTimeMillis();
+    }
+
+
     @Override
     protected void onDestroy() {
         stopMiniService();
@@ -296,6 +298,7 @@ public class MainActivity extends BaseActivity implements Observer {
         }
     }
 
+    /* SharedPreferences 관련 */
     public void savePreferences(long date, long walk, double distance) {
         ManbogiData data = new ManbogiData(date, walk, distance);
         Gson gson = new Gson();
@@ -317,6 +320,7 @@ public class MainActivity extends BaseActivity implements Observer {
         }
     }
 
+    /* database 관련 */
     public void saveDB() {
         String json = BaseP.c().getString(AppConstants.PREFERENCES.SAVE_PREFERENCES);
         Gson gson = new Gson();
@@ -404,6 +408,7 @@ public class MainActivity extends BaseActivity implements Observer {
         return formatter.format(calendar.getTime());
     }
 
+    /* Drawable Option 관련 리스너 */
     private DrawerLayout.DrawerListener onDrawerStateChanged = new DrawerLayout.DrawerListener() {
 
         @Override

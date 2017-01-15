@@ -52,8 +52,8 @@
         android:layout_gravity="left"
         android:layout_marginLeft="15dp"
         android:text="◀ 당겨서 옵션"
-        android:textSize="18dp"
-        android:textColor="@color/green" />
+        android:textColor="@color/green"
+        android:textSize="18dp" />
 
     <View
         android:layout_width="match_parent"

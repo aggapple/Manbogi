@@ -27,6 +27,7 @@ public class ManbogiData implements Parcelable {
         this.distance = distance;
         this.runState = false;
     }
+
     public int getId() {
         return id;
     }

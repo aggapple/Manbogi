@@ -1,11 +1,6 @@
 package com.aggapple.manbogi.service;
 
-import com.aggapple.manbogi.MainActivity;
-import com.aggapple.manbogi.R;
-import com.aggapple.manbogi.base.BaseApplication;
-
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -13,7 +8,6 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,7 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
+import com.aggapple.manbogi.MainActivity;
+import com.aggapple.manbogi.R;
+import com.aggapple.manbogi.base.BaseApplication;
 
 @SuppressLint({"ClickableViewAccessibility", "InflateParams"})
 public class MiniModeService extends Service implements OnTouchListener {

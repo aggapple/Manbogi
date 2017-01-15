@@ -1,12 +1,8 @@
 package com.aggapple.manbogi;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,22 +26,23 @@ import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 
-import java.lang.ref.WeakReference;
-
 public class MainMonitorFragment extends BaseFragment {
 
     private CheckBox mServiceSwitch;
     private TextView mWalk, mDistance, mLoation;
 
+    /* 맵 객체 */
     private NMapContext mMapContext;
     private NMapLocationManager mMapLocationManager;
 
+    /* 화면관련 변수 */
     private static final int WALK_REST_LIMIT = 3;
     private double mTotDistance = 0.0d;
     private double mPrevLat = 0.0d;
     private double mPrevLng = 0.0d;
     private long mTotWalk = 0l;
 
+    /* 미구현된 추가옵션 관련 변수 */
     private CountDownTimer mConuntDownTimer;
     private boolean mIsWalking = false;
 
@@ -88,17 +85,7 @@ public class MainMonitorFragment extends BaseFragment {
         mServiceSwitch.setOnCheckedChangeListener(onCheckedChange);
     }
 
-    private void initValue() {
-        mTotDistance = 0.0d;
-        mTotWalk = 0l;
-    }
-
-    private void isRunningCheck(){
-        if(BaseP.c().getBoolean(AppConstants.PREFERENCES.IS_RUN_PREFERENCES, false)){
-            mServiceSwitch.setChecked(true);
-        }
-    }
-
+    /* 지도관련 초기화 */
     private void initMap() {
         // Fragment에 포함된 NMapView 객체 찾기
         NMapView mapView = findMapView(super.getView());
@@ -136,27 +123,6 @@ public class MainMonitorFragment extends BaseFragment {
 
     }
 
-    private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
-        @Override
-        public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
-            MainMonitorObserver.getInstance().notifyObservers(nGeoPoint);
-
-//			Toast.makeText(getActivity(), ""+nGeoPoint.getLatitude()+", "+nGeoPoint.getLongitude(), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-
-        @Override
-        public void onLocationUpdateTimeout(NMapLocationManager nMapLocationManager) {
-
-        }
-
-        @Override
-        public void onLocationUnavailableArea(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
-
-        }
-    };
-
     public void updateUI() {
         if (getView() == null)
             return;
@@ -171,6 +137,7 @@ public class MainMonitorFragment extends BaseFragment {
         });
     }
 
+    /* 비정상 종료 시 임시저장값 세팅 */
     public void loadPreferences() {
         ManbogiData data = ((MainActivity) getActivity()).loadPreferences();
         if (data != null) {
@@ -181,6 +148,39 @@ public class MainMonitorFragment extends BaseFragment {
         }
     }
 
+    /* 비정상 종료 케이스 확인 */
+    private void isRunningCheck() {
+        if (BaseP.c().getBoolean(AppConstants.PREFERENCES.IS_RUN_PREFERENCES, false)) {
+            mServiceSwitch.setChecked(true);
+        }
+    }
+
+    /* 변수값 초기화 */
+    private void initValue() {
+        mTotDistance = 0.0d;
+        mTotWalk = 0l;
+    }
+
+    /* 내 위치찾기 */
+    private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
+        @Override
+        public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
+            MainMonitorObserver.getInstance().notifyObservers(nGeoPoint);
+
+//			Toast.makeText(getActivity(), ""+nGeoPoint.getLatitude()+", "+nGeoPoint.getLongitude(), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        @Override
+        public void onLocationUpdateTimeout(NMapLocationManager nMapLocationManager) {
+        }
+
+        @Override
+        public void onLocationUnavailableArea(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
+        }
+    };
+
+    /* 가속센서와 연동하여 결과값 연산 후 표시 */
     public void updateUI(Object data) {
         if (getView() == null)
             return;
@@ -241,6 +241,7 @@ public class MainMonitorFragment extends BaseFragment {
         }
     }
 
+    /* START - STOP */
     private OnCheckedChangeListener onCheckedChange = new OnCheckedChangeListener() {
 
         @Override

@@ -1,16 +1,15 @@
 package com.aggapple.manbogi;
 
-import com.aggapple.manbogi.base.BaseActivity;
-import com.aggapple.manbogi.utils.BaseP;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+
+import com.aggapple.manbogi.base.BaseActivity;
+import com.aggapple.manbogi.utils.BaseP;
 
 public class Intro extends BaseActivity {
 
@@ -30,6 +29,8 @@ public class Intro extends BaseActivity {
         }
     }
 
+    private static final int REQUEST_CODE_LOCATION = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +39,7 @@ public class Intro extends BaseActivity {
         checkPermission();
     }
 
-    private static final int REQUEST_CODE_LOCATION = 0;
-
+    /* 퍼미션 확인(사용자 동의) */
     private void checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
@@ -48,15 +48,12 @@ public class Intro extends BaseActivity {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Intent intent = new Intent();
         intent.setClass(Intro.this, MainActivity.class);
 
         if (requestCode == REQUEST_CODE_LOCATION) {
-            if (grantResults.length == 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // success!
                 BaseP.c().set(EXTRA.PERMISSION.ACCESS_FINE_LOCATION.name(), true);
             } else {
@@ -68,6 +65,7 @@ public class Intro extends BaseActivity {
         goMain(intent);
     }
 
+    /* 메인 화면으로 이동 */
     private void goMain(final Intent intent) {
         new AsyncTask<Void, Void, Void>() {
 
