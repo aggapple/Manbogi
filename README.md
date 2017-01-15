@@ -5,6 +5,7 @@ This is an app. How much you walk around.
 CONTENT_URI = "content://com.provider.manbogi/manbogi"
 
 # environment
+- AndroidStudio 2.2.3
 - minSdkVersion 15
 - targetSdkVersion 23
 - buildToolsVersion 25.0.2
