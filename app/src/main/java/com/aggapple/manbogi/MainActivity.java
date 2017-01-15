@@ -306,12 +306,14 @@ public class MainActivity extends BaseActivity implements Observer {
     }
 
     public void insertData(ManbogiData data) {
-        ContentValues cv = new ContentValues();
-        cv.put(DBHelper._DATE, "" + data.getDate());
-        cv.put(DBHelper._WALK, "" + data.getWalk());
-        cv.put(DBHelper._DISTANCE, "" + data.getDistance());
+        if (data != null) {
+            ContentValues cv = new ContentValues();
+            cv.put(DBHelper._DATE, "" + data.getDate());
+            cv.put(DBHelper._WALK, "" + data.getWalk());
+            cv.put(DBHelper._DISTANCE, "" + data.getDistance());
 
-        Uri retUri = getContentResolver().insert(DBProvider.CONTENT_URI, cv);
+            Uri retUri = getContentResolver().insert(DBProvider.CONTENT_URI, cv);
+        }
     }
 
     public void updateData(Cursor c, ManbogiData data) {

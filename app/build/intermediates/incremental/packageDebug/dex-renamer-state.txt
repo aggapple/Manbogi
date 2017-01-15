@@ -1,4 +1,4 @@
-#Mon Jan 16 01:37:08 KST 2017
+#Mon Jan 16 02:10:29 KST 2017
 base.0=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_deac7daae7b6efbe02b7ecbc74ad5d937e3888d2
 renamed.1=classes.dex
 renamed.0=classes2.dex

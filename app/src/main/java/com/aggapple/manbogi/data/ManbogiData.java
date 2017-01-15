@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class ManbogiData implements Parcelable {
     private int id = -1;
-    private long date = 0l;
+    private long date = System.currentTimeMillis();
     private long walk = 0l;
     private double distance = 0.0d;
     private boolean runState = false;

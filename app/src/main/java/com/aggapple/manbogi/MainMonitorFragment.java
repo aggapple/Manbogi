@@ -76,6 +76,7 @@ public class MainMonitorFragment extends BaseFragment {
         initUI();
         initMap();
         updateUI();
+        isRunningCheck();
     }
 
     private void initUI() {
@@ -90,6 +91,21 @@ public class MainMonitorFragment extends BaseFragment {
     private void initValue() {
         mTotDistance = 0.0d;
         mTotWalk = 0l;
+    }
+
+    private void isRunningCheck(){
+        if(BaseP.c().getBoolean(MainActivity.IS_RUN_PREFERENCES, false)){
+            mServiceSwitch.setText("STOP");
+            mServiceSwitch.setBackgroundColor(0xFF0000FF);
+
+            ((MainActivity) getActivity()).startWalkService();
+            ((MainActivity) getActivity()).startMiniService();
+            ((MainActivity) getActivity()).setStart(true);
+            ((MainActivity) getActivity()).updateRunningState(true);
+            BaseP.c().set(MainActivity.IS_RUN_PREFERENCES, true);
+
+            updateUI();
+        }
     }
 
     private void initMap() {
