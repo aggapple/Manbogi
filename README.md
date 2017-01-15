@@ -19,3 +19,6 @@ CONTENT_URI = "content://com.provider.manbogi/manbogi"
 
 # APIs
 * NaverMapAPI - https://developers.naver.com/docs/map/overview
+
+
+!http://aggapple.com/imgs/manbogi_00.png
