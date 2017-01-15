@@ -1,6 +1,7 @@
 package com.aggapple.manbogi;
 
 import com.aggapple.manbogi.base.BaseActivity;
+import com.aggapple.manbogi.utils.BaseP;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,6 +13,23 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 public class Intro extends BaseActivity {
+
+    interface EXTRA {
+        enum PERMISSION {
+            ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, ACCESS_WIFI_STATE, CHANGE_WIFI_STATE;
+
+            boolean[] confirm = {true, true, true, true};
+
+            boolean isConfirm() {
+                return this.confirm[this.ordinal()];
+            }
+
+            void setConfirm(boolean confirm) {
+                this.confirm[this.ordinal()] = confirm;
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,27 +44,31 @@ public class Intro extends BaseActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
         } else {
-            goMain();
+            goMain(new Intent(Intro.this, MainActivity.class));
         }
     }
 
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions,
                                            int[] grantResults) {
+        Intent intent = new Intent();
+        intent.setClass(Intro.this, MainActivity.class);
+
         if (requestCode == REQUEST_CODE_LOCATION) {
             if (grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // success!
-                goMain();
+                BaseP.c().set(EXTRA.PERMISSION.ACCESS_FINE_LOCATION.name(), true);
             } else {
                 // Permission was denied or request was cancelled
-                //TODO::퍼미션을 얻지 못했을 경우 다음 화면에서 문제가 발생하지 않도록 주의 요구!!
-                goMain();
+                BaseP.c().set(EXTRA.PERMISSION.ACCESS_FINE_LOCATION.name(), false);
             }
         }
+
+        goMain(intent);
     }
 
-    private void goMain() {
+    private void goMain(final Intent intent) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -60,7 +82,7 @@ public class Intro extends BaseActivity {
                     e.printStackTrace();
                 }
 
-                startActivity(new Intent(Intro.this, MainActivity.class));
+                startActivity(intent);
                 finish();
                 return null;
             }

@@ -313,13 +313,12 @@ public class MainActivity extends BaseActivity implements Observer {
 
     public void updateData(Cursor c, ManbogiData data) {
         ContentValues cv = new ContentValues();
-        long walk = Long.parseLong(c.getString(2));
-        double distance = Double.parseDouble(c.getString(3));
+        data.setWalk((long) Long.parseLong(c.getString(2)) + data.getWalk());
+        data.setDistance((double) Double.parseDouble(c.getString(3)) + data.getDistance());
 
-        cv.put(DBHelper._WALK, "" + (long) (walk + data.getWalk()));
-        cv.put(DBHelper._DISTANCE, "" + (double) (distance + data.getDistance()));
-        int updateCnt = getContentResolver().update(DBProvider.CONTENT_URI, cv, DBHelper._ID + "=" + data.getId(), null);
-        Toast.makeText(MainActivity.this, "" + updateCnt + ", " + walk + ", " + data.getWalk() + ", " + distance + ", " + data.getDistance(), Toast.LENGTH_SHORT).show();
+        if(deleteData(c.getInt(0))) {
+            insertData(data);
+        }
     }
 
     public ArrayList<ManbogiData> queryAllData() {

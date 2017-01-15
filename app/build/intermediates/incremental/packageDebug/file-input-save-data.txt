@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Jan 15 22:20:51 KST 2017
+#Sun Jan 15 23:30:18 KST 2017
 25.file=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-hdpi-v4\\library_naver_logo.png
 41.base=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\resources-debug.ap_
 25.base=D\:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\resources-debug.ap_

@@ -5,29 +5,29 @@
     density="xxxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="163561167184794"
+    timestamp="167776221895842"
     token="4236648486742076521"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="442" />
+        duration="1395" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="712" />
+        duration="525" />
     <task
         name="verifier"
-        duration="206" />
+        duration="165" />
 
     <artifact
         location="D:\Liberty\Dev\studio\Manbogi\app\build\outputs\apk\app-debug.apk"
         type="MAIN" />
 
     <build
-        timestamp="163561167184794"
+        timestamp="167776221895842"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="D:\Liberty\Dev\studio\Manbogi\app\build\outputs\apk\app-debug.apk"

@@ -17,8 +17,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- WIFI 상태활용시 추가 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- my location detect -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name="com.aggapple.manbogi.base.BaseApplication"

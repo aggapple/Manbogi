@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.aggapple.manbogi.base.BaseFragment;
 import com.aggapple.manbogi.data.ManbogiData;
+import com.aggapple.manbogi.utils.BaseP;
+import com.aggapple.manbogi.utils.DeviceUtils;
 import com.aggapple.manbogi.utils.SocialUtils;
 import com.nhn.android.maps.NMapActivity;
 import com.nhn.android.maps.NMapContext;
@@ -96,7 +98,12 @@ public class MainMonitorFragment extends BaseFragment {
 
         NMapLocationManager mLocationManager = new NMapLocationManager(getActivity());
         mLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
-        mLocationManager.enableMyLocation(true);
+        if(BaseP.c().getBoolean(Intro.EXTRA.PERMISSION.ACCESS_FINE_LOCATION.name())) {
+            mLocationManager.enableMyLocation(true);
+            DeviceUtils.chkGpsService(getActivity());
+        }else{
+            mLoation.setText("권한이 설정되지 않아 위치를 표시할 수 없습니다.");
+        }
 
         // location manager
         mMapLocationManager = new NMapLocationManager(getActivity());
