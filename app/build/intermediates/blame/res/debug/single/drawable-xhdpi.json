@@ -1,15 +1,15 @@
 [
     {
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\launcher.png",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable-xhdpi\\launcher.png"
+    },
+    {
         "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\walk_sm.png",
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable-xhdpi\\walk_sm.png"
     },
     {
         "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\walk.png",
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable-xhdpi\\walk.png"
-    },
-    {
-        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_launcher.png",
-        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
     },
     {
         "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\intro.png",

@@ -62,7 +62,7 @@ MERGED from [com.naver.maps.open:naver-map-api:2.1.2] D:\Liberty\Dev\studio\Manb
 	android:allowBackup
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:23:9-35
 	android:icon
-		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:25:9-45
+		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:25:9-42
 	android:theme
 		ADDED from D:\Liberty\Dev\studio\Manbogi\app\src\main\AndroidManifest.xml:28:9-40
 	android:name

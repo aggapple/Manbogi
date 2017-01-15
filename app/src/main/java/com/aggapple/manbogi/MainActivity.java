@@ -11,7 +11,9 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -35,6 +37,7 @@ import com.aggapple.manbogi.views.BaseTabFragmentPagerAdapter;
 import com.aggapple.manbogi.views.CheckerHelperLinearLayout;
 import com.google.gson.Gson;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +71,8 @@ public class MainActivity extends BaseActivity implements Observer {
     private boolean mIsStart = false;
 
     private MiniModeService mMiniModeService;
+    public static final String SAVE_PREFERENCES = "SAVE_PREFERENCES";
+    public static final String IS_RUN_PREFERENCES = "IS_RUN_PREFERENCES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,8 +254,6 @@ public class MainActivity extends BaseActivity implements Observer {
             }
         }
     }
-
-    public static final String SAVE_PREFERENCES = "SAVE_PREFERENCES";
 
     public void savePreferences(long date, long walk, double distance) {
         ManbogiData data = new ManbogiData(date, walk, distance);

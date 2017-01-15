@@ -28,8 +28,8 @@ public final class R {
         public static final int btn_tab_bar=0x7f020002;
         public static final int btn_tab_text=0x7f020003;
         public static final int btn_text_green=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int intro=0x7f020006;
+        public static final int intro=0x7f020005;
+        public static final int launcher=0x7f020006;
         public static final int library_btn_navermap_bg=0x7f020007;
         public static final int library_btn_navermap_bg_pressed=0x7f020008;
         public static final int library_naver_logo=0x7f020009;

@@ -1,8 +1,12 @@
 package com.aggapple.manbogi;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,8 @@ import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.nmapmodel.NMapPlacemark;
 
+import java.lang.ref.WeakReference;
+
 public class MainMonitorFragment extends BaseFragment {
 
     private CheckBox mServiceSwitch;
@@ -46,6 +52,7 @@ public class MainMonitorFragment extends BaseFragment {
     public long getTotWalk() {
         return mTotWalk;
     }
+
     public double getTotDistance() {
         return mTotDistance;
     }
@@ -98,10 +105,10 @@ public class MainMonitorFragment extends BaseFragment {
 
         NMapLocationManager mLocationManager = new NMapLocationManager(getActivity());
         mLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
-        if(BaseP.c().getBoolean(Intro.EXTRA.PERMISSION.ACCESS_FINE_LOCATION.name())) {
+        if (BaseP.c().getBoolean(Intro.EXTRA.PERMISSION.ACCESS_FINE_LOCATION.name())) {
             mLocationManager.enableMyLocation(true);
             DeviceUtils.chkGpsService(getActivity());
-        }else{
+        } else {
             mLoation.setText("권한이 설정되지 않아 위치를 표시할 수 없습니다.");
         }
 
@@ -147,6 +154,18 @@ public class MainMonitorFragment extends BaseFragment {
         if (getView() == null)
             return;
 
+        loadPreferences();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWalk.setText("" + mTotWalk);
+                mDistance.setText(SocialUtils.convertDistance(mTotDistance));
+
+            }
+        });
+    }
+
+    public void loadPreferences() {
         ManbogiData data = ((MainActivity) getActivity()).loadPreferences();
         if (data != null) {
             if (data.isRunning()) {
@@ -154,8 +173,6 @@ public class MainMonitorFragment extends BaseFragment {
                 mTotDistance = data.getDistance();
             }
         }
-        mWalk.setText("" + mTotWalk);
-        mDistance.setText("" + mTotDistance);
     }
 
     public void updateUI(Object data) {
@@ -169,7 +186,7 @@ public class MainMonitorFragment extends BaseFragment {
                 if (((MainActivity) getActivity()).isStart()) {
                     if (mIsWalking && (mPrevLat != 0 || mPrevLng != 0)) {
                         mTotDistance += calcDistance;
-                        mDistance.setText(SocialUtils.convertDistance(mTotDistance));
+                        updateUI();
                         ((MainActivity) getActivity()).savePreferences(System.currentTimeMillis(), mTotWalk, mTotDistance);
                         if (((MainActivity) getActivity()).getMiniModeService() != null) {
                             ((MainActivity) getActivity()).getMiniModeService().setMiniDistance(SocialUtils.convertDistance(mTotDistance));
@@ -183,10 +200,8 @@ public class MainMonitorFragment extends BaseFragment {
         } else if (data instanceof Float) {
             if (((MainActivity) getActivity()).isStart()) {
                 mTotWalk += 1;
-                mWalk.setText("" + mTotWalk);
                 if (((MainActivity) getActivity()).mCurrentMode == MainActivity.STATE.MODE.STANDARD_WALK) {
                     mTotDistance += 0.5d;
-                    mDistance.setText(SocialUtils.convertDistance(mTotDistance));
                 } else {
                     mIsWalking = true;
 
@@ -206,6 +221,7 @@ public class MainMonitorFragment extends BaseFragment {
                     };
                     mConuntDownTimer.start();
                 }
+                updateUI();
 
                 if (((MainActivity) getActivity()).getMiniModeService() != null) {
                     ((MainActivity) getActivity()).getMiniModeService().setMiniWalk(mTotWalk);
@@ -223,7 +239,6 @@ public class MainMonitorFragment extends BaseFragment {
 
         @Override
         public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
-            ((MainActivity) getActivity()).updateRunningState(isChecked);
             if (isChecked) { // State is start
                 mServiceSwitch.setText("STOP");
                 mServiceSwitch.setBackgroundColor(0xFF0000FF);
@@ -231,6 +246,8 @@ public class MainMonitorFragment extends BaseFragment {
                 ((MainActivity) getActivity()).startWalkService();
                 ((MainActivity) getActivity()).startMiniService();
                 ((MainActivity) getActivity()).setStart(true);
+                ((MainActivity) getActivity()).updateRunningState(true);
+                BaseP.c().set(MainActivity.IS_RUN_PREFERENCES, true);
 
                 updateUI();
 
@@ -241,6 +258,8 @@ public class MainMonitorFragment extends BaseFragment {
                 ((MainActivity) getActivity()).stopWalkService();
                 ((MainActivity) getActivity()).stopMiniService();
                 ((MainActivity) getActivity()).setStart(false);
+                ((MainActivity) getActivity()).updateRunningState(false);
+                BaseP.c().set(MainActivity.IS_RUN_PREFERENCES, false);
 
                 ((MainActivity) getActivity()).saveDB();
                 initValue();

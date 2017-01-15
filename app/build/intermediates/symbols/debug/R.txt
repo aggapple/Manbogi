@@ -11,8 +11,8 @@ int drawable btn_start 0x7f020001
 int drawable btn_tab_bar 0x7f020002
 int drawable btn_tab_text 0x7f020003
 int drawable btn_text_green 0x7f020004
-int drawable ic_launcher 0x7f020005
-int drawable intro 0x7f020006
+int drawable intro 0x7f020005
+int drawable launcher 0x7f020006
 int drawable library_btn_navermap_bg 0x7f020007
 int drawable library_btn_navermap_bg_pressed 0x7f020008
 int drawable library_naver_logo 0x7f020009

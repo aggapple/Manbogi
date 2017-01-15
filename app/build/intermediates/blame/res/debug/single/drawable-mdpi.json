@@ -12,7 +12,7 @@
         "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\exploded-aar\\com.naver.maps.open\\naver-map-api\\2.1.2\\res\\drawable-mdpi\\library_btn_navermap_bg_pressed.png"
     },
     {
-        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_launcher.png",
-        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+        "merged": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\launcher.png",
+        "source": "D:\\Liberty\\Dev\\studio\\Manbogi\\app\\src\\main\\res\\drawable-mdpi\\launcher.png"
     }
 ]
