@@ -11,7 +11,7 @@ CONTENT_URI = "content://com.provider.manbogi/manbogi"
 - buildToolsVersion 25.0.2
 
 # functions
-1. Indicate wher you walk.
+1. Indicate where you walk.
 2. Make a note of your walk.
 3. Displays your current location.
 4. Use options to control the speed of walking.
