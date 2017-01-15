@@ -16,6 +16,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aggapple.manbogi.base.AppConstants;
 import com.aggapple.manbogi.base.BaseFragment;
 import com.aggapple.manbogi.data.ManbogiData;
 import com.aggapple.manbogi.utils.BaseP;
@@ -38,7 +39,6 @@ public class MainMonitorFragment extends BaseFragment {
 
     private NMapContext mMapContext;
     private NMapLocationManager mMapLocationManager;
-    private static final String CLIENT_ID = "Narc0Em43EdZIvjgnLve";// 애플리케이션 클라이언트 아이디 값
 
     private static final int WALK_REST_LIMIT = 3;
     private double mTotDistance = 0.0d;
@@ -94,17 +94,8 @@ public class MainMonitorFragment extends BaseFragment {
     }
 
     private void isRunningCheck(){
-        if(BaseP.c().getBoolean(MainActivity.IS_RUN_PREFERENCES, false)){
-            mServiceSwitch.setText("STOP");
-            mServiceSwitch.setBackgroundColor(0xFF0000FF);
-
-            ((MainActivity) getActivity()).startWalkService();
-            ((MainActivity) getActivity()).startMiniService();
-            ((MainActivity) getActivity()).setStart(true);
-            ((MainActivity) getActivity()).updateRunningState(true);
-            BaseP.c().set(MainActivity.IS_RUN_PREFERENCES, true);
-
-            updateUI();
+        if(BaseP.c().getBoolean(AppConstants.PREFERENCES.IS_RUN_PREFERENCES, false)){
+            mServiceSwitch.setChecked(true);
         }
     }
 
@@ -114,7 +105,7 @@ public class MainMonitorFragment extends BaseFragment {
         if (mapView == null) {
             throw new IllegalArgumentException("NMapFragment dose not have an instance of NMapView.");
         }
-        mapView.setClientId(CLIENT_ID);
+        mapView.setClientId(AppConstants.CLIENT_ID);
 
         // NMapActivity를 상속하지 않는 경우에는 NMapView 객체 생성후 반드시 setupMapView()를 호출해야함.
         mMapContext.setupMapView(mapView);
@@ -176,7 +167,6 @@ public class MainMonitorFragment extends BaseFragment {
             public void run() {
                 mWalk.setText("" + mTotWalk);
                 mDistance.setText(SocialUtils.convertDistance(mTotDistance));
-
             }
         });
     }
@@ -217,7 +207,7 @@ public class MainMonitorFragment extends BaseFragment {
             if (((MainActivity) getActivity()).isStart()) {
                 mTotWalk += 1;
                 if (((MainActivity) getActivity()).mCurrentMode == MainActivity.STATE.MODE.STANDARD_WALK) {
-                    mTotDistance += 0.5d;
+                    mTotDistance += (double) BaseP.c().getInt(AppConstants.PREFERENCES.STEP_PREFERENCES) * 0.1d;
                 } else {
                     mIsWalking = true;
 
@@ -263,7 +253,7 @@ public class MainMonitorFragment extends BaseFragment {
                 ((MainActivity) getActivity()).startMiniService();
                 ((MainActivity) getActivity()).setStart(true);
                 ((MainActivity) getActivity()).updateRunningState(true);
-                BaseP.c().set(MainActivity.IS_RUN_PREFERENCES, true);
+                BaseP.c().set(AppConstants.PREFERENCES.IS_RUN_PREFERENCES, true);
 
                 updateUI();
 
@@ -275,7 +265,7 @@ public class MainMonitorFragment extends BaseFragment {
                 ((MainActivity) getActivity()).stopMiniService();
                 ((MainActivity) getActivity()).setStart(false);
                 ((MainActivity) getActivity()).updateRunningState(false);
-                BaseP.c().set(MainActivity.IS_RUN_PREFERENCES, false);
+                BaseP.c().set(AppConstants.PREFERENCES.IS_RUN_PREFERENCES, false);
 
                 ((MainActivity) getActivity()).saveDB();
                 initValue();

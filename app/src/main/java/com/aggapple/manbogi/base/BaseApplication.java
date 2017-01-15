@@ -13,6 +13,14 @@ public class BaseApplication extends Application {
 		super.onCreate();
 		registerActivityLifecycleCallbacks(new MyActivityLifecycleCallbacks());
 		BaseP.c().INIT(this);
+		defaultSettings();
+	}
+
+	public void defaultSettings(){
+		if(BaseP.c().getInt(AppConstants.PREFERENCES.STEP_PREFERENCES) < 0)
+			BaseP.c().set(AppConstants.PREFERENCES.STEP_PREFERENCES, 5);
+		if(BaseP.c().getInt(AppConstants.PREFERENCES.SENSOR_PREFERENCES) < 0)
+			BaseP.c().set(AppConstants.PREFERENCES.SENSOR_PREFERENCES, 415);
 	}
 
 	private AppStatus mAppStatus;

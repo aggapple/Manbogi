@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.aggapple.manbogi.MainMonitorObserver;
+import com.aggapple.manbogi.base.AppConstants;
+import com.aggapple.manbogi.utils.BaseP;
 
 public class WalkSensorService extends Service implements SensorEventListener {
 
@@ -65,7 +67,7 @@ public class WalkSensorService extends Service implements SensorEventListener {
 
                 speed = Math.abs(x + y + z - lastX - lastY - lastZ) / gabOfTime * 10000;
 
-                if (speed > SHAKE_THRESHOLD) {
+                if (speed > BaseP.c().getInt(AppConstants.PREFERENCES.SENSOR_PREFERENCES)) {
                     MainMonitorObserver.getInstance().notifyObservers(speed);
                 }
 

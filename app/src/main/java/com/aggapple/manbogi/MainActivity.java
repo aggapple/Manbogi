@@ -1,8 +1,5 @@
 package com.aggapple.manbogi;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,17 +8,23 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aggapple.manbogi.MainActivity.STATE.PAGE;
+import com.aggapple.manbogi.base.AppConstants;
 import com.aggapple.manbogi.base.BaseActivity;
 import com.aggapple.manbogi.data.ManbogiData;
 import com.aggapple.manbogi.provider.DBHelper;
@@ -37,7 +40,6 @@ import com.aggapple.manbogi.views.BaseTabFragmentPagerAdapter;
 import com.aggapple.manbogi.views.CheckerHelperLinearLayout;
 import com.google.gson.Gson;
 
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +65,13 @@ public class MainActivity extends BaseActivity implements Observer {
     private ChargeTabFragmentPagerAdapter mAdapter;
     private CheckerHelperLinearLayout mTab;
 
+    private DrawerLayout mDrawerLayout;
+    private LinearLayout mDrawerView;
+
+    private TextView mStepValue, mSensorVelue;
+    private SeekBar mStepController, mSensorController;
+    private Button mSetDefault;
+
     private long mBackPressedTime = 0;
     private ServiceConnection mConnection;
 
@@ -71,8 +80,6 @@ public class MainActivity extends BaseActivity implements Observer {
     private boolean mIsStart = false;
 
     private MiniModeService mMiniModeService;
-    public static final String SAVE_PREFERENCES = "SAVE_PREFERENCES";
-    public static final String IS_RUN_PREFERENCES = "IS_RUN_PREFERENCES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +87,31 @@ public class MainActivity extends BaseActivity implements Observer {
         setContentView(R.layout.main);
 
         initUI();
+        initSettings();
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        mDrawerLayout.isDrawerOpen(mDrawerView);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void initUI() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(onDrawerStateChanged);
+        mDrawerView = (LinearLayout) findViewById(R.id.drawer_view);
+
+        mStepValue = (TextView) mDrawerView.findViewById(R.id.step_value);
+        mSensorVelue = (TextView) mDrawerView.findViewById(R.id.sensor_value);
+        mStepController = (SeekBar) mDrawerView.findViewById(R.id.step_controller);
+        mStepController.setOnSeekBarChangeListener(stepListner);
+        mSensorController = (SeekBar) mDrawerView.findViewById(R.id.sensor_controller);
+        mSensorController.setOnSeekBarChangeListener(sensorListner);
+        mSetDefault = (Button) mDrawerView.findViewById(R.id.set_default);
+        mSetDefault.setOnClickListener(onSetDefualtClick);
+
         mTab = (CheckerHelperLinearLayout) findViewById(R.id.tab);
         mPager = (ViewPager) super.findViewById(R.id.pager);
 
@@ -113,6 +142,18 @@ public class MainActivity extends BaseActivity implements Observer {
                 mIsMiniMode = false;
             }
         };
+    }
+
+    public void initSettings() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mStepValue.setText("" + BaseP.c().getInt(AppConstants.PREFERENCES.STEP_PREFERENCES));
+                mSensorVelue.setText("" + BaseP.c().getInt(AppConstants.PREFERENCES.SENSOR_PREFERENCES));
+                mStepController.setProgress(BaseP.c().getInt(AppConstants.PREFERENCES.STEP_PREFERENCES) * 10);
+                mSensorController.setProgress(BaseP.c().getInt(AppConstants.PREFERENCES.SENSOR_PREFERENCES) / 5 - 165 / 5);
+            }
+        });
     }
 
     public class ChargeTabFragmentPagerAdapter extends BaseTabFragmentPagerAdapter {
@@ -259,25 +300,25 @@ public class MainActivity extends BaseActivity implements Observer {
         ManbogiData data = new ManbogiData(date, walk, distance);
         Gson gson = new Gson();
         String json = gson.toJson(data);
-        BaseP.c().set(SAVE_PREFERENCES, json);
+        BaseP.c().set(AppConstants.PREFERENCES.SAVE_PREFERENCES, json);
     }
 
     public ManbogiData loadPreferences() {
         Gson gson = new Gson();
-        return gson.fromJson(BaseP.c().getString(SAVE_PREFERENCES), ManbogiData.class);
+        return gson.fromJson(BaseP.c().getString(AppConstants.PREFERENCES.SAVE_PREFERENCES), ManbogiData.class);
     }
 
     public void updateRunningState(boolean isRunning) {
         Gson gson = new Gson();
-        ManbogiData data = gson.fromJson(BaseP.c().getString(SAVE_PREFERENCES), ManbogiData.class);
+        ManbogiData data = gson.fromJson(BaseP.c().getString(AppConstants.PREFERENCES.SAVE_PREFERENCES), ManbogiData.class);
         if (data != null) {
             data.setRunState(isRunning);
-            BaseP.c().set(SAVE_PREFERENCES, gson.toJson(data));
+            BaseP.c().set(AppConstants.PREFERENCES.SAVE_PREFERENCES, gson.toJson(data));
         }
     }
 
     public void saveDB() {
-        String json = BaseP.c().getString(SAVE_PREFERENCES);
+        String json = BaseP.c().getString(AppConstants.PREFERENCES.SAVE_PREFERENCES);
         Gson gson = new Gson();
         ManbogiData manbogiData = gson.fromJson(json, ManbogiData.class);
 
@@ -302,7 +343,7 @@ public class MainActivity extends BaseActivity implements Observer {
         }
 
         ((MainRecordFragment) mAdapter.getItem(PAGE.RECORD.ordinal())).updateUI();
-        BaseP.c().set(SAVE_PREFERENCES, gson.toJson(new ManbogiData()));
+        BaseP.c().set(AppConstants.PREFERENCES.SAVE_PREFERENCES, gson.toJson(new ManbogiData()));
     }
 
     public void insertData(ManbogiData data) {
@@ -321,7 +362,7 @@ public class MainActivity extends BaseActivity implements Observer {
         data.setWalk((long) Long.parseLong(c.getString(2)) + data.getWalk());
         data.setDistance((double) Double.parseDouble(c.getString(3)) + data.getDistance());
 
-        if(deleteData(c.getInt(0))) {
+        if (deleteData(c.getInt(0))) {
             insertData(data);
         }
     }
@@ -362,5 +403,84 @@ public class MainActivity extends BaseActivity implements Observer {
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
     }
+
+    private DrawerLayout.DrawerListener onDrawerStateChanged = new DrawerLayout.DrawerListener() {
+
+        @Override
+        public void onDrawerStateChanged(int arg0) {
+        }
+
+        @Override
+        public void onDrawerSlide(View arg0, float arg1) {
+        }
+
+        @Override
+        public void onDrawerOpened(View arg0) {
+        }
+
+        @Override
+        public void onDrawerClosed(View arg0) {
+        }
+    };
+
+    public SeekBar.OnSeekBarChangeListener stepListner = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mStepValue.setText("" + progress / 10);
+                }
+            });
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            BaseP.c().set(AppConstants.PREFERENCES.STEP_PREFERENCES, seekBar.getProgress() / 10);
+        }
+    };
+
+    public SeekBar.OnSeekBarChangeListener sensorListner = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mSensorVelue.setText("" + (165 + 5 * progress));
+                }
+            });
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            BaseP.c().set(AppConstants.PREFERENCES.SENSOR_PREFERENCES, (165 + 5 * seekBar.getProgress()));
+        }
+    };
+    public View.OnClickListener onSetDefualtClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mStepValue.setText("" + 5);
+                    mStepController.setProgress(50);
+                    mSensorVelue.setText("" + 415);
+                    mSensorController.setProgress(50);
+                    BaseP.c().set(AppConstants.PREFERENCES.STEP_PREFERENCES, 5);
+                    BaseP.c().set(AppConstants.PREFERENCES.SENSOR_PREFERENCES, 415);
+
+                }
+            });
+        }
+    };
 
 }
